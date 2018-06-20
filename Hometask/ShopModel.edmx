@@ -1,0 +1,375 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ShopModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="ShopModelStoreContainer">
+    <EntitySet Name="Customers" EntityType="ShopModel.Store.Customers" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Departments" EntityType="ShopModel.Store.Departments" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Products" EntityType="ShopModel.Store.Products" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Checks" EntityType="ShopModel.Store.Checks" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Sellers" EntityType="ShopModel.Store.Sellers" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ProductChecks" EntityType="ShopModel.Store.ProductChecks" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="CustomerCheck" Association="ShopModel.Store.CustomerCheck">
+      <End Role="Customer" EntitySet="Customers" />
+      <End Role="Check" EntitySet="Checks" />
+    </AssociationSet>
+    <AssociationSet Name="DepartmentProduct" Association="ShopModel.Store.DepartmentProduct">
+      <End Role="Department" EntitySet="Departments" />
+      <End Role="Product" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="SellerCheck" Association="ShopModel.Store.SellerCheck">
+      <End Role="Seller" EntitySet="Sellers" />
+      <End Role="Check" EntitySet="Checks" />
+    </AssociationSet>
+    <AssociationSet Name="CheckProductCheck" Association="ShopModel.Store.CheckProductCheck">
+      <End Role="Check" EntitySet="Checks" />
+      <End Role="ProductCheck" EntitySet="ProductChecks" />
+    </AssociationSet>
+    <AssociationSet Name="ProductProductCheck" Association="ShopModel.Store.ProductProductCheck">
+      <End Role="Product" EntitySet="Products" />
+      <End Role="ProductCheck" EntitySet="ProductChecks" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Customers">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Departments">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DeptName" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Products">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Price" Type="decimal" Nullable="false" Precision="18" Scale="0" />
+    <Property Name="Department_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Checks">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SaleDate" Type="datetime" Nullable="false" />
+    <Property Name="AllSumm" Type="decimal" Nullable="false" />
+    <Property Name="Customer_Id" Type="int" Nullable="false" />
+    <Property Name="Seller_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Sellers">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProductChecks">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Count" Type="int" Nullable="false" />
+    <Property Name="Check_Id" Type="int" Nullable="false" />
+    <Property Name="Product_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="CustomerCheck">
+    <End Role="Customer" Type="ShopModel.Store.Customers" Multiplicity="1" />
+    <End Role="Check" Type="ShopModel.Store.Checks" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Check">
+        <PropertyRef Name="Customer_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="DepartmentProduct">
+    <End Role="Department" Type="ShopModel.Store.Departments" Multiplicity="1" />
+    <End Role="Product" Type="ShopModel.Store.Products" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Department">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="Department_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SellerCheck">
+    <End Role="Seller" Type="ShopModel.Store.Sellers" Multiplicity="1" />
+    <End Role="Check" Type="ShopModel.Store.Checks" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Seller">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Check">
+        <PropertyRef Name="Seller_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="CheckProductCheck">
+    <End Role="Check" Type="ShopModel.Store.Checks" Multiplicity="1" />
+    <End Role="ProductCheck" Type="ShopModel.Store.ProductChecks" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Check">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProductCheck">
+        <PropertyRef Name="Check_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ProductProductCheck">
+    <End Role="Product" Type="ShopModel.Store.Products" Multiplicity="1" />
+    <End Role="ProductCheck" Type="ShopModel.Store.ProductChecks" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProductCheck">
+        <PropertyRef Name="Product_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="ShopModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="ShopModelContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Customers" EntityType="ShopModel.Customer" />
+          <EntitySet Name="Departments" EntityType="ShopModel.Department" />
+          <EntitySet Name="Products" EntityType="ShopModel.Product" />
+          <EntitySet Name="Checks" EntityType="ShopModel.Check" />
+          <EntitySet Name="Sellers" EntityType="ShopModel.Seller" />
+          <EntitySet Name="ProductChecks" EntityType="ShopModel.ProductCheck" />
+          <AssociationSet Name="CustomerCheck" Association="ShopModel.CustomerCheck">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Check" EntitySet="Checks" />
+          </AssociationSet>
+          <AssociationSet Name="DepartmentProduct" Association="ShopModel.DepartmentProduct">
+            <End Role="Department" EntitySet="Departments" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="SellerCheck" Association="ShopModel.SellerCheck">
+            <End Role="Seller" EntitySet="Sellers" />
+            <End Role="Check" EntitySet="Checks" />
+          </AssociationSet>
+          <AssociationSet Name="CheckProductCheck" Association="ShopModel.CheckProductCheck">
+            <End Role="Check" EntitySet="Checks" />
+            <End Role="ProductCheck" EntitySet="ProductChecks" />
+          </AssociationSet>
+          <AssociationSet Name="ProductProductCheck" Association="ShopModel.ProductProductCheck">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="ProductCheck" EntitySet="ProductChecks" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Checks" Relationship="ShopModel.CustomerCheck" FromRole="Customer" ToRole="Check" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DeptName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Products" Relationship="ShopModel.DepartmentProduct" FromRole="Department" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <NavigationProperty Name="Department" Relationship="ShopModel.DepartmentProduct" FromRole="Product" ToRole="Department" />
+          <NavigationProperty Name="ProductCheck" Relationship="ShopModel.ProductProductCheck" FromRole="Product" ToRole="ProductCheck" />
+        </EntityType>
+        <EntityType Name="Check">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SaleDate" Type="DateTime" Nullable="false" />
+          <Property Name="AllSumm" Type="Decimal" Nullable="false" />
+          <NavigationProperty Name="Customer" Relationship="ShopModel.CustomerCheck" FromRole="Check" ToRole="Customer" />
+          <NavigationProperty Name="Seller" Relationship="ShopModel.SellerCheck" FromRole="Check" ToRole="Seller" />
+          <NavigationProperty Name="ProductCheck" Relationship="ShopModel.CheckProductCheck" FromRole="Check" ToRole="ProductCheck" />
+        </EntityType>
+        <EntityType Name="Seller">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Checks" Relationship="ShopModel.SellerCheck" FromRole="Seller" ToRole="Check" />
+        </EntityType>
+        <EntityType Name="ProductCheck">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Count" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Check" Relationship="ShopModel.CheckProductCheck" FromRole="ProductCheck" ToRole="Check" />
+          <NavigationProperty Name="Product" Relationship="ShopModel.ProductProductCheck" FromRole="ProductCheck" ToRole="Product" />
+        </EntityType>
+        <Association Name="CustomerCheck">
+          <End Type="ShopModel.Customer" Role="Customer" Multiplicity="1" />
+          <End Type="ShopModel.Check" Role="Check" Multiplicity="*" />
+        </Association>
+        <Association Name="DepartmentProduct">
+          <End Type="ShopModel.Department" Role="Department" Multiplicity="1" />
+          <End Type="ShopModel.Product" Role="Product" Multiplicity="*" />
+        </Association>
+        <Association Name="SellerCheck">
+          <End Type="ShopModel.Seller" Role="Seller" Multiplicity="1" />
+          <End Type="ShopModel.Check" Role="Check" Multiplicity="*" />
+        </Association>
+        <Association Name="CheckProductCheck">
+          <End Type="ShopModel.Check" Role="Check" Multiplicity="1" />
+          <End Type="ShopModel.ProductCheck" Role="ProductCheck" Multiplicity="*" />
+        </Association>
+        <Association Name="ProductProductCheck">
+          <End Type="ShopModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="ShopModel.ProductCheck" Role="ProductCheck" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ShopModelStoreContainer" CdmEntityContainer="ShopModelContainer">
+    <EntitySetMapping Name="Customers">
+      <EntityTypeMapping TypeName="IsTypeOf(ShopModel.Customer)">
+        <MappingFragment StoreEntitySet="Customers">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Departments">
+      <EntityTypeMapping TypeName="IsTypeOf(ShopModel.Department)">
+        <MappingFragment StoreEntitySet="Departments">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="DeptName" ColumnName="DeptName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Products">
+      <EntityTypeMapping TypeName="IsTypeOf(ShopModel.Product)">
+        <MappingFragment StoreEntitySet="Products">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Checks">
+      <EntityTypeMapping TypeName="IsTypeOf(ShopModel.Check)">
+        <MappingFragment StoreEntitySet="Checks">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="SaleDate" ColumnName="SaleDate" />
+          <ScalarProperty Name="AllSumm" ColumnName="AllSumm" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Sellers">
+      <EntityTypeMapping TypeName="IsTypeOf(ShopModel.Seller)">
+        <MappingFragment StoreEntitySet="Sellers">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProductChecks">
+      <EntityTypeMapping TypeName="IsTypeOf(ShopModel.ProductCheck)">
+        <MappingFragment StoreEntitySet="ProductChecks">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Count" ColumnName="Count" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="CustomerCheck" TypeName="ShopModel.CustomerCheck" StoreEntitySet="Checks">
+      <EndProperty Name="Customer">
+        <ScalarProperty Name="Id" ColumnName="Customer_Id" />
+      </EndProperty>
+      <EndProperty Name="Check">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="DepartmentProduct" TypeName="ShopModel.DepartmentProduct" StoreEntitySet="Products">
+      <EndProperty Name="Department">
+        <ScalarProperty Name="Id" ColumnName="Department_Id" />
+      </EndProperty>
+      <EndProperty Name="Product">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="SellerCheck" TypeName="ShopModel.SellerCheck" StoreEntitySet="Checks">
+      <EndProperty Name="Seller">
+        <ScalarProperty Name="Id" ColumnName="Seller_Id" />
+      </EndProperty>
+      <EndProperty Name="Check">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="CheckProductCheck" TypeName="ShopModel.CheckProductCheck" StoreEntitySet="ProductChecks">
+      <EndProperty Name="Check">
+        <ScalarProperty Name="Id" ColumnName="Check_Id" />
+      </EndProperty>
+      <EndProperty Name="ProductCheck">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ProductProductCheck" TypeName="ShopModel.ProductProductCheck" StoreEntitySet="ProductChecks">
+      <EndProperty Name="Product">
+        <ScalarProperty Name="Id" ColumnName="Product_Id" />
+      </EndProperty>
+      <EndProperty Name="ProductCheck">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
